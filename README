@@ -11,3 +11,8 @@ How try it:
 2. cd trianglebot
 3. mv env .env
 4. echo "TOKEN=your_token_here" > .env
+
+How it works:
+
+To avoid matplotlib issue(1) i use multiprocessing.
+1. UserWarning: Starting a Matplotlib GUI outside of the main thread will likely fail.
