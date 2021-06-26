@@ -2,3 +2,12 @@ Just try some graphs with python.
 This is interesting btw.
 why are u still here?
 Check out what I've done...
+---------------------------
+
+Update (second commit): while I was trying matplotlib I got the idea to create a telegram bot that will send triangles
+
+How try it:
+1. git clone https://github.com/lusm554/trianglebot.git
+2. cd trianglebot
+3. mv env .env
+4. echo "TOKEN=your_token_here" > .env
