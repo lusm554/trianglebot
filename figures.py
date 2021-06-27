@@ -33,9 +33,10 @@ class Triangle:
   grid_color = 'gray'
   triangle_color = 'purple'
   
-  def __init__(self, a=5, b=5):
-    self.a = a
-    self.b = b
+  def __init__(self, name, a=5, b=5):
+    self.name = name
+    self.a = int(a)
+    self.b = int(b)
   def set(self):
     fig, ax = plt.subplots()
     ax.plot([0, self.a, self.a, 0], [0, 0, self.b, 0], color=self.triangle_color, marker='.', label='Meet this is triangle')
@@ -49,7 +50,8 @@ class Triangle:
     plt.show()
     return self
   def get(self):
-    return 'img here' 
+    plt.savefig(self.name, dpi=300, bbox_inches='tight')
+    return self.name
     
 
 class Figure:
@@ -60,9 +62,9 @@ class Figure:
   def __init__(self, figurename):
     self.fname = figurename
   
-  def add_value(self, q, coors):
+  def add_value(self, q, coors, graph_name):
     if self.fname == 'triangle':
-      t = Triangle(*coors)
+      t = Triangle(graph_name, *coors)
       img = t.set().get()
       q.put(img)
 
