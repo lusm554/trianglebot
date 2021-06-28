@@ -29,6 +29,7 @@ def cmd_info(header='All commands:\n') -> str:
   return header + help_str
 
 def getFigure(f, coors) -> str:
+  '''Create graph and return img path.'''
   img = os.path.join(ASSETS_DIR, '{}.{}'.format(datetime.timestamp(datetime.now()), IMG_EXT))
   if f == 'triangle':
     f = Figure('triangle')
@@ -40,10 +41,12 @@ def getFigure(f, coors) -> str:
   return img
 
 def removeFigure(f) -> None:
+  '''Remove img.'''
   os.remove(f)
   logger.info('{} removed.'.format(f))
 
 def parse_arg(s):
+  '''Parse arguments for figure.'''
   rawargs = [x.split('=') for x in s.split(' ')]
   return dict(rawargs)
 
@@ -58,6 +61,7 @@ def start(update, context) -> None:
   context.bot.send_message(chat_id=update.effective_chat.id, text=cmd_info(header))
 
 def startdraw(update, context) -> int:
+  '''Start the conversation and asks the use about figure.'''
   reply_keyboard = [['Triangle']]
   logger.info('/figure by {}'.format(update.message.from_user.username))
   update.message.reply_text(
@@ -67,6 +71,7 @@ def startdraw(update, context) -> int:
   return FIGURE 
 
 def figure(update, context) -> int: 
+  '''Stores the selected figure and ask for a parameters.'''
   figure = update.message.text
   update.message.reply_text(
     f'Good! You selected {figure}.\n' \
@@ -81,6 +86,7 @@ def figure(update, context) -> int:
   return ARGUMENTS
 
 def coordinates(update, context) -> int:
+  '''Sends the graph img and ends the conversation.'''
   user = update.message.from_user
   rawcoors = update.message.text
   args = parse_arg(rawcoors) 
@@ -93,6 +99,7 @@ def coordinates(update, context) -> int:
   return ConversationHandler.END
 
 def cancel(update, context) -> int:
+  '''Cancels and ends the conversation.'''
   update.message.reply_text(
     'Bye! I hope we can talk again some day.', reply_markup=ReplyKeyboardRemove()
   )
@@ -133,5 +140,4 @@ def main() -> None:
 
 if __name__ == '__main__':
   main()
-
 

@@ -11,6 +11,8 @@ class Triangle:
     
   Attributes
   ----------
+  name : str
+    name of the file
   a : int
     cathetus value for side a
   b : int
@@ -56,7 +58,19 @@ class Triangle:
 
 class Figure:
   '''
-  Description of the class *here*
+  A class used to determine figure and put it to Queue
+  
+  ...
+  
+  Attributes
+  ----------
+  figurename : str
+    name of the graph file
+  
+  Methods
+  -------
+  add_value()
+    Create figure, save it to img and put file name to Queue
   '''
   
   def __init__(self, figurename):
