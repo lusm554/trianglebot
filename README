@@ -11,6 +11,7 @@ How try it:
 2. cd trianglebot
 3. mv env .env
 4. echo "TOKEN=your_token_here" > .env
+5. python3 main.py
 
 How it works:
 
