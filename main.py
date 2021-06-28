@@ -124,7 +124,7 @@ def main() -> None:
     entry_points = [CommandHandler('figure', startdraw)],
     states = {
       FIGURE: [MessageHandler(Filters.regex('^(Triangle)$'), figure)],
-      ARGUMENTS: [MessageHandler(Filters.text, coordinates)]
+      ARGUMENTS: [MessageHandler(Filters.regex('[a|b|c]=[0-9]+ [b|a|c]=[0-9]+'), coordinates)]
     },
     fallbacks = [CommandHandler('cancel', cancel)]
   )
