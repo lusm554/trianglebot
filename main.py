@@ -8,6 +8,7 @@ from datetime import datetime
 import os
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 FIGURE, ARGUMENTS = range(2)
 IMG_EXT = 'png'
@@ -40,6 +41,7 @@ def getFigure(f, coors) -> str:
 
 def removeFigure(f) -> None:
   os.remove(f)
+  logger.info('{} removed.'.format(f))
 
 def parse_arg(s):
   rawargs = [x.split('=') for x in s.split(' ')]
@@ -57,6 +59,7 @@ def start(update, context) -> None:
 
 def startdraw(update, context) -> int:
   reply_keyboard = [['Triangle']]
+  logger.info('/figure by {}'.format(update.message.from_user.username))
   update.message.reply_text(
     'Please choose figure.',
     reply_markup=ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True),
@@ -78,10 +81,12 @@ def figure(update, context) -> int:
   return ARGUMENTS
 
 def coordinates(update, context) -> int:
+  user = update.message.from_user
   rawcoors = update.message.text
   args = parse_arg(rawcoors) 
   
   f = getFigure('triangle', (args['a'], args['b']))
+  logger.info('{} created by {}'.format(f, user.username))
   context.bot.send_photo(chat_id=update.effective_chat.id, photo=open(f, 'rb'))
   removeFigure(f)
   
