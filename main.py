@@ -6,6 +6,7 @@ from figures import Figure
 from multiprocessing import Process, Queue
 from datetime import datetime
 import os
+from pifagor import Pifagor
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -48,6 +49,7 @@ def removeFigure(f) -> None:
 def parse_arg(s):
   '''Parse arguments for figure.'''
   rawargs = [x.split('=') for x in s.split(' ')]
+  rawargs = sorted(rawargs, key=lambda x: x[0])
   return dict(rawargs)
 
 # Commands logic
@@ -80,7 +82,7 @@ def figure(update, context) -> int:
     + 'b - cathetus\n' \
     + 'c - hypotenuse\n' \
     + 'Example:\n' \
-    + 'a=5 b=5 or c=8 a=5',
+    + 'a=5 b=5 c=False or c=8 a=5 b=False',
     reply_markup=ReplyKeyboardRemove(),
   )
   return ARGUMENTS
@@ -91,9 +93,21 @@ def coordinates(update, context) -> int:
   rawcoors = update.message.text
   args = parse_arg(rawcoors) 
   
-  f = getFigure('triangle', (args['a'], args['b']))
+  # Filter values
+  for k, v in args.items():
+    if not v.isnumeric():
+      args[k] = False
+  
+  av, bv, cv = Pifagor(*args.values()).countup()
+  print(av, bv, cv)
+  
+  f = getFigure('triangle', (av, bv))
   logger.info('{} created by {}'.format(f, user.username))
-  context.bot.send_photo(chat_id=update.effective_chat.id, photo=open(f, 'rb'))
+  
+  caption = f'Cathetus a value = {av}\n' \
+  + f'Cathetus b value = {bv}\n' \
+  + f'Hypotenuse c value = {cv}'
+  context.bot.send_photo(chat_id=update.effective_chat.id, photo=open(f, 'rb'), caption=caption)
   removeFigure(f)
   
   return ConversationHandler.END
@@ -124,7 +138,7 @@ def main() -> None:
     entry_points = [CommandHandler('figure', startdraw)],
     states = {
       FIGURE: [MessageHandler(Filters.regex('^(Triangle)$'), figure)],
-      ARGUMENTS: [MessageHandler(Filters.regex('[a|b|c]=[0-9]+ [b|a|c]=[0-9]+'), coordinates)]
+      ARGUMENTS: [MessageHandler(Filters.regex('[a|b|c]=[0-9]+ [a|b|c]=[0-9]+ [a|b|c]=False'), coordinates)]
     },
     fallbacks = [CommandHandler('cancel', cancel)]
   )
