@@ -1,10 +1,5 @@
 Just try some graphs with python.
-This is interesting btw.
-why are u still here?
-Check out what I've done...
----------------------------
-
-Update (second commit): while I was trying matplotlib I got the idea to create a telegram bot that will send triangles
+While I was trying matplotlib I got the idea to create a telegram bot that will send triangles.
 
 How try it:
 1. git clone https://github.com/lusm554/trianglebot.git
@@ -13,7 +8,3 @@ How try it:
 4. echo "TOKEN=your_token_here" > .env
 5. python3 main.py
 
-How it works:
-
-To avoid matplotlib issue(1) i use multiprocessing.
-1. UserWarning: Starting a Matplotlib GUI outside of the main thread will likely fail.
